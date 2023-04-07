@@ -71,7 +71,7 @@ pub fn process_by_name(name string) !Process {
 	mut entry := C.PROCESSENTRY32{}
 	entry.dwSize = sizeof(entry)
 
-	snapshot := C.CreateToolhelp32Snapshot(proc.th32cs_snapprocess, voidptr(0))
+	snapshot := C.CreateToolhelp32Snapshot(th32cs_snapprocess, voidptr(0))
 	defer {
 		C.CloseHandle(snapshot)
 	}
@@ -83,7 +83,7 @@ pub fn process_by_name(name string) !Process {
 				dst << c
 			}
 			if cstr_to_vstr(dst).to_lower() == name.to_lower() {
-				h := C.OpenProcess(proc.process_all_access, true, entry.th32ProcessID)
+				h := C.OpenProcess(process_all_access, true, entry.th32ProcessID)
 				p := Process{
 					handle: h
 					id: entry.th32ProcessID
@@ -103,7 +103,7 @@ pub fn module_by_name(id u32, name string) voidptr {
 	mut entry := C.MODULEENTRY32{}
 	entry.dwSize = sizeof(C.MODULEENTRY32)
 
-	snapshot := C.CreateToolhelp32Snapshot(proc.th32cs_snapmodule | proc.th32cs_snapmodule32,
+	snapshot := C.CreateToolhelp32Snapshot(th32cs_snapmodule | th32cs_snapmodule32,
 		id)
 	defer {
 		C.CloseHandle(snapshot)
