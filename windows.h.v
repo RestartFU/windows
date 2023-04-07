@@ -1,7 +1,5 @@
 module windows
 
-import pkg.windows
-
 #include <windows.h>
 
 pub const (
