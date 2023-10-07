@@ -128,7 +128,7 @@ pub struct MouseHook {
 	mut:
 	hook voidptr
 	pub:
-	handler fn (MouseData)
+	handler ?fn (MouseData)
 }
 
 pub fn (mut h MouseHook) hook() {
@@ -181,7 +181,7 @@ pub struct KeyboardHook {
 	mut:
 	hook voidptr
 	pub:
-	handler fn (KeyboardData)
+	handler ?fn (KeyboardData)
 }
 
 pub fn (mut h KeyboardHook) hook() {
