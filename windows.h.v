@@ -154,8 +154,8 @@ fn (h MouseHook) callback(nCode int, wParam u64, lParam i64) i64 {
 		extra_info: mouse_struct.dwExtraInfo
 		action: wParam
 	}
-	if f := h.handler(d) {
-		f()
+	if f := h.handler {
+		f(d)
 	}
 
 	return C.CallNextHookEx(h.hook, nCode, wParam, lParam)
@@ -206,8 +206,8 @@ fn (h KeyboardHook) callback(nCode int, wParam u64, lParam i64) i64 {
 		extra_info: keyboard_struct.dwExtraInfo
 		action: wParam
 	}
-	if f := h.handler(d) {
-		f()
+	if f := h.handler {
+		f(d)
 	}
 
 	return C.CallNextHookEx(h.hook, nCode, wParam, lParam)
