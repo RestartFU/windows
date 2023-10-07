@@ -17,19 +17,21 @@ struct C.COORD {
 	X i16
 	Y i16
 }
+
 [typedef]
 struct C.SMALL_RECT {
-	Left i16
-	Top i16
-	Right i16
+	Left   i16
+	Top    i16
+	Right  i16
 	Bottom i16
 }
+
 [typedef]
 struct C.CONSOLE_SCREEN_BUFFER_INFO {
-	dwSize C.COORD
-	dwCursorPosition C.COORD
-	wAttributes u16
-	srWindow C.SMALL_RECT
+	dwSize              C.COORD
+	dwCursorPosition    C.COORD
+	wAttributes         u16
+	srWindow            C.SMALL_RECT
 	dwMaximumWindowSize C.COORD
 }
 
@@ -109,13 +111,13 @@ struct C.INPUT {
 fn C.SendInput(u64, &C.INPUT, int) u64
 
 pub struct Point {
-	pub:
+pub:
 	x i32
 	y i32
 }
 
 pub struct MouseData {
-	pub:
+pub:
 	point      Point
 	mouse_data u32
 	flags      u32
@@ -125,9 +127,9 @@ pub struct MouseData {
 }
 
 pub struct MouseHook {
-	mut:
+mut:
 	hook voidptr
-	pub:
+pub:
 	handler ?fn (MouseData)
 }
 
@@ -152,7 +154,7 @@ fn (h MouseHook) callback(nCode int, wParam u64, lParam i64) i64 {
 		extra_info: mouse_struct.dwExtraInfo
 		action: wParam
 	}
-	h.handler(d)
+	h.handler(d) or {}
 
 	return C.CallNextHookEx(h.hook, nCode, wParam, lParam)
 }
@@ -168,7 +170,7 @@ pub fn send_mouse_input(flags u32) {
 }
 
 pub struct KeyboardData {
-	pub:
+pub:
 	vk_code    u32
 	scan_code  u32
 	flags      u32
@@ -178,9 +180,9 @@ pub struct KeyboardData {
 }
 
 pub struct KeyboardHook {
-	mut:
+mut:
 	hook voidptr
-	pub:
+pub:
 	handler ?fn (KeyboardData)
 }
 
@@ -202,7 +204,7 @@ fn (h KeyboardHook) callback(nCode int, wParam u64, lParam i64) i64 {
 		extra_info: keyboard_struct.dwExtraInfo
 		action: wParam
 	}
-	h.handler(d)
+	h.handler(d) or {}
 
 	return C.CallNextHookEx(h.hook, nCode, wParam, lParam)
 }
