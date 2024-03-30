@@ -12,13 +12,13 @@ pub const (
 	null           = unsafe { nil }
 )
 
-[typedef]
+@[typedef]
 struct C.COORD {
 	X i16
 	Y i16
 }
 
-[typedef]
+@[typedef]
 struct C.SMALL_RECT {
 	Left   i16
 	Top    i16
@@ -26,7 +26,7 @@ struct C.SMALL_RECT {
 	Bottom i16
 }
 
-[typedef]
+@[typedef]
 struct C.CONSOLE_SCREEN_BUFFER_INFO {
 	dwSize              C.COORD
 	dwCursorPosition    C.COORD
@@ -35,13 +35,13 @@ struct C.CONSOLE_SCREEN_BUFFER_INFO {
 	dwMaximumWindowSize C.COORD
 }
 
-[typedef]
+@[typedef]
 struct C.POINT {
 	x i32
 	y i32
 }
 
-[typedef]
+@[typedef]
 struct C.MSLLHOOKSTRUCT {
 	pt          C.POINT
 	mouseData   u32
@@ -50,7 +50,7 @@ struct C.MSLLHOOKSTRUCT {
 	dwExtraInfo &u64
 }
 
-[typedef]
+@[typedef]
 struct C.KBDLLHOOKSTRUCT {
 	vkCode      u32
 	scanCode    u32
@@ -76,14 +76,14 @@ fn C.DispatchMessage(voidptr) i64
 fn C.UnhookWindowsHookEx(voidptr) bool
 fn C.CallNextHookEx(voidptr, int, u64, i64) i64
 
-[typedef]
+@[typedef]
 struct C.HARDWAREINPUT {
 	uMsg    u32
 	wParamL u16
 	wParamH u16
 }
 
-[typedef]
+@[typedef]
 struct C.KEYBDINPUT {
 	wVk         u16
 	wScam       u16
@@ -92,7 +92,7 @@ struct C.KEYBDINPUT {
 	dwExtraInfo &u64
 }
 
-[typedef]
+@[typedef]
 struct C.MOUSEINPUT {
 	dx          i64
 	dy          i64
@@ -102,7 +102,7 @@ struct C.MOUSEINPUT {
 	dwExtraInfo &u64 = unsafe { nil }
 }
 
-[typedef]
+@[typedef]
 struct C.INPUT {
 	@type u32
 	mi    C.MOUSEINPUT
