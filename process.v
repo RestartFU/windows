@@ -1,4 +1,4 @@
-module process
+module windows
 
 #include <processthreadsapi.h>
 #include <tlhelp32.h>
@@ -12,7 +12,7 @@ pub const (
 	th32cs_snapmodule32 = 0x10
 )
 
-[typedef]
+@[typedef]
 struct C.PROCESSENTRY32 {
 	mut:
 	dwSize              u32
@@ -27,7 +27,7 @@ struct C.PROCESSENTRY32 {
 	szExeFile           [260]u8
 }
 
-[typedef]
+@[typedef]
 struct C.MODULEENTRY32 {
 	mut:
 	dwSize        u32
@@ -50,6 +50,7 @@ fn C.Process32Next(hSnapshot voidptr, lppe &C.PROCESSENTRY32) bool
 fn C.Module32First(hSnapshot voidptr, lpme &C.MODULEENTRY32) bool
 fn C.Module32Next(hSnapshot voidptr, lpme &C.MODULEENTRY32) bool
 
+fn C.ReadProcessMemory(hProcess voidptr, lpBaseAddress voidptr, lpBuffer voidptr, nSize u64, lpNumberOfBytesWritten &u64) bool
 fn C.WriteProcessMemory(hProcess voidptr, lpBaseAddress voidptr, lpBuffer voidptr, nSize u64, lpNumberOfBytesWritten &u64) bool
 fn C.VirtualProtectEx(hProcess voidptr, lpAddress voidptr, dwSize u32, flNewProtect u32, lpflOldProtect &u32) bool
 
@@ -65,6 +66,11 @@ pub fn (p Process) write_memory(addr voidptr, buf voidptr, size u32) (bool, u64)
 	num := u32(0)
 	C.VirtualProtectEx(p.handle, addr, size, 0x40, &num)
 	return C.WriteProcessMemory(p.handle, addr, buf, size, &n_wr), n_wr
+}
+
+pub fn (p Process )read_memory(addr voidptr, buf voidptr, size u32) bool {
+	n_wr := u64(0)
+	return C.ReadProcessMemory(p.handle, addr, buf, size, &n_wr)
 }
 
 pub fn process_by_name(name string) !Process {
